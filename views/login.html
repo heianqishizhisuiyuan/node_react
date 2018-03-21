@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+</head>
+<style type='text/css'>
+	html{
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		height: 100%;
+		
+	}
+	body {
+		background:url(/static/loginbg.jpg) top center no-repeat; 
+		background-size:cover;
+	}
+	.loginWrap{
+		width: 250px;
+		margin: 0 auto;
+		margin-top: 200px;
+	}
+	.loginWrap input {
+		outline: none;
+		border-radius: 5px;
+		line-height: 35px;
+		width: 250px;
+		background: #9d9a92;
+		border: none;
+		border: 1px solid #8a8883;
+		font-size: 18px;
+		text-indent: 40px;
+		color: #e4e4e2;
+	}
+	.inputWrap{
+		text-align: center;
+		position: relative;
+	}
+	.inputWrap img{
+		position: absolute;
+		top: 8px;
+		left: 8px;
+		width: 23px;
+		height: 20px;
+
+	}
+	.loginlog{
+		height: 50px;
+		width: 50px;
+		border: 5px solid #86847b;
+		border-radius: 50%;
+		margin: 0 auto
+	}
+	.title{
+		text-align: center;
+		color: #f5ebeb;
+	}
+	.bt_login{
+		width: 250px;
+		text-align:center;
+		background: #ff7b34;
+		color: #e4e4e2;
+		line-height:35px;
+		outline: none;
+		border-radius: 5px;
+		border: 1px solid #8a8883;
+		cursor: pointer;
+	}
+	.bt_login:hover{
+		background: #f96516;
+	}
+</style>
+<body>
+	<div class='loginWrap'>
+		<div>
+			<div class='loginlog'><img src="/static/userLogo.png" alt=""></div>
+		</div>
+		<h4 class='title'>Administrator Login</h4>
+		<p class='inputWrap'>
+			<img src="/static/user.png" >
+			<input id="username" type="text"></p>
+		<p class='inputWrap'>
+			<img src="/static/password.png" >
+			<input id="password" type="password">
+		</p>
+		<p class='inputWrap'>
+			<button id="bt_login" class="bt_login">Login</button>
+		</p>
+	</div>
+	
+</body>
+</html>
+<script type="text/javascript">
+	var username = document.getElementById('username');
+	var password = document.getElementById('password');
+	document.getElementById('bt_login').onclick=function() {
+		var usernameValue=username.value;
+		var passwordValue=password.value;
+		if(usernameValue.length==0) {
+			alert('请填写用户名');
+		}else if(passwordValue.length==0) {
+			alert('请填写密码');
+		}else{
+			var XML = new XMLHttpRequest();
+			XML.open('POST','/admin/login',true);
+			XML.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			XML.send('username='+usernameValue+'&password='+passwordValue);
+			XML.onreadystatechange = function() {
+				if(XML.readyState== 4&&XML.status==200) {
+					let result = JSON.parse(XML.responseText)
+					if(result.success){
+						window.location.href='/#/admin/home'
+					}else{
+						alert(result.msg)
+					}
+				}
+			}
+		}
+
+	}
+
+</script>

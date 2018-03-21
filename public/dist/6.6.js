@@ -1,0 +1,1 @@
+webpackJsonp([6],{680:function(e,t,u){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function l(){return a.default.createElement("h2",null,"哎呀！地址出错了!")}Object.defineProperty(t,"__esModule",{value:!0});var r=u(2),a=n(r);t.default=l,e.exports=t.default}});
