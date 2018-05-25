@@ -1,12 +1,14 @@
 "use strict";
 import express from 'express'
-import path  from 'path';
+import path from 'path';
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var db = require('./config/db.config.js').db
+
+import router from './routes'
 
 var ejs = require('ejs');
 
@@ -15,8 +17,8 @@ var ejs = require('ejs');
 */
 var MongoDBStore = require('connect-mongodb-session')(session);
 var store = new MongoDBStore({
-	uri: 'mongodb://localhost:27017/mongo_session',
-	collection: 'sessions'
+    uri: 'mongodb://localhost:27017/mongo_session',
+    collection: 'sessions'
 });
 
 
@@ -52,29 +54,29 @@ app.set('view engine', 'html');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-	extended: true
+    extended: true
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use(session({
-	store: store,
-	secret: '1111',
-	resave: true,
-	name: 'wang',
-	saveUninitialized: true
+    store: store,
+    secret: '1111',
+    resave: true,
+    name: 'wang',
+    saveUninitialized: true
 }))
 
 //配置百度编辑器上传功能
 var ueditor = require("./index.js");
-app.use("/ueditor/ue", ueditor(path.join(__dirname, 'public'), function (req, res, next) {
-	console.log(1234)
-    //客户端上传文件设置
+app.use("/ueditor/ue", ueditor(path.join(__dirname, 'public'), function(req, res, next) {
+    console.log(1234)
+        //客户端上传文件设置
     var imgDir = '/img/ueditor/'
-     var ActionType = req.query.action;
+    var ActionType = req.query.action;
     if (ActionType === 'uploadimage' || ActionType === 'uploadfile' || ActionType === 'uploadvideo') {
-        var file_url = imgDir;//默认图片上传地址
+        var file_url = imgDir; //默认图片上传地址
         /*其他上传格式的地址*/
         if (ActionType === 'uploadfile') {
             file_url = '/file/ueditor/'; //附件
@@ -104,28 +106,21 @@ app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-	var err = new Error('Not Found');
-	err.status = 404;
-	next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-	// set locals, only providing error in development
-	res.locals.message = err.message;
-	res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-	// render the error page
-	res.status(err.status || 500);
-	res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });
-
-
-
-
-
-
-
 
 
 
